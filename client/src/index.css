@@ -1,0 +1,128 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900;6..12,1000&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  font-family: "Nunito Sans", sans-serif;
+}
+
+.cell {
+  display: inline-block;
+  width: 49%;
+  text-align: center;
+}
+
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+.form-container {
+  box-shadow: rgba(236, 233, 233, 0.884) 0px 5px 15px;
+  border-radius: 35px;
+  box-sizing: border-box;
+  animation: fadeIn 1s ease-in; /* Added fade-in animation */
+}
+
+/* Custom Scrollbar Styles */
+/* Track */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: #807c7c;
+  border-radius: 6px;
+  display: none;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #302f2f;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dots-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.dot {
+  height: 12px;
+  width: 12px;
+  margin-right: 10px;
+  border-radius: 10px;
+  background-color: #ffffff; /* White */
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.dot:last-child {
+  margin-right: 0;
+}
+
+.dot:nth-child(1) {
+  animation-delay: -0.3s;
+}
+
+.dot:nth-child(2) {
+  animation-delay: -0.1s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.1s;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    background-color: #cccccc; /* Light Gray */
+    box-shadow: 0 0 0 0 rgba(204, 204, 204, 0.7);
+  }
+
+  50% {
+    transform: scale(1.2);
+    background-color: #000000; /* Black */
+    box-shadow: 0 0 0 10px rgba(204, 204, 204, 0);
+  }
+
+  100% {
+    transform: scale(0.8);
+    background-color: #ffffff; /* White */
+    box-shadow: 0 0 0 0 rgba(204, 204, 204, 0.7);
+  }
+}
+
+body {
+  background-image: url('./bg.jpg'); /* Local background image */
+  background-size: cover; /* Cover the entire area */
+  background-position: center; /* Center the image */
+  animation: none; /* Ensure no animation is applied */
+  overflow: hidden; /* Prevent scrolling */
+}
+
+html, body, #root {
+  height: 100%; /* Ensure full height for the background */
+}
+
