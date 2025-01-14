@@ -3,60 +3,53 @@ import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 import Dashboard from "./pages/dashboard";
 import Login from "./pages/Login";
-import TaskDetails from "./pages/TaskDetails";
-import Tasks from "./pages/Tasks";
-import Trash from "./pages/Trash";
-import Users from "./pages/Users";
 import Signup from "./pages/Signup";
-
-
+import Sidebar from "./components/Sidebar";
+import Navbar from "./components/Navbar";
 
 function Layout() {
-  const { user } = useSelector((state) => state.auth);
-
+  const { user } = useSelector((state) => state.auth); // Check user authentication
   const location = useLocation();
 
   return user ? (
-    <div className='w-full h-screen flex flex-col md:flex-row'>
-      <div className='w-1/5 h-screen bg-white sticky top-0 hidden md:block'>
-        <Sidebar />
-      </div>
+    <Navigate to="/log-in" state={{ from: location }} replace />
+  ) : (
+    <div className="w-full h-screen flex">
+    {/* Sidebar */}
+    <div className="w-1/5 h-screen bg-gray-800 sticky top-0 hidden md:block">
+      <Sidebar />
+    </div>
 
-      {/* <MobileSidebar /> */}
-
-      <div className='flex-1 overflow-y-auto'>
-        {/* <Navbar /> */}
-
-        <div className='p-4 2xl:px-10'>
-          <Outlet />
-        </div>
+    {/* Main content */}
+    <div className="flex-1 flex flex-col overflow-y-auto">
+      <Navbar />
+      <div className="p-4">
+        <Outlet />
       </div>
     </div>
-  ) : (
-    <Navigate to='/log-in' state={{ from: location }} replace />
+  </div>
   );
 }
 
 function App() {
+  const { user } = useSelector((state) => state.auth);
+
   return (
-<main className='w-full min-h-screen'>
+    <main className="w-full min-h-screen">
       <Routes>
-       <Route element={<Layout />}>
-          <Route index path='/' element={<Navigate to='/dashboard' />} />
-          
-          <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/tasks' element={<Tasks />} />
-          <Route path='/completed/:status' element={<Tasks />} />
-          <Route path='/in-progress/:status' element={<Tasks />} />
-          <Route path='/todo/:status' element={<Tasks />} />
-          <Route path='/team' element={<Users />} />
-          <Route path='/trashed' element={<Trash />} />
-          <Route path='/task/:id' element={<TaskDetails />} />
-      
+        {/* Protected Routes */}
+        <Route element={<Layout />}>
+          <Route
+            index
+            path="/"
+            element={<Navigate to={user ? "/dashboard" : "/log-in"} replace />}
+          />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Route>
-<Route path='/log-in' element={<Login />} />
-<Route path='/signup' element={<Signup />} />
-        
+
+        {/* Public Routes */}
+        <Route path="/log-in" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
       </Routes>
 
       <Toaster richColors />
