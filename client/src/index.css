@@ -114,7 +114,7 @@
   }
 }
 
-body {
+ .dashboard body {
   background-image: url('./bg.jpg'); /* Local background image */
   background-size: cover; /* Cover the entire area */
   background-position: center; /* Center the image */
@@ -126,3 +126,40 @@ html, body, #root {
   height: 100%; /* Ensure full height for the background */
 }
 
+/* General Styling */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
+}
+
+/* Navbar Animations */
+header {
+  transition: transform 0.5s ease-in-out;
+}
+
+/* Sidebar Animations */
+aside {
+  transition: transform 0.5s ease-in-out;
+}
+
+/* Hover Effects */
+button:hover {
+  transform: translateY(-2px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+a:hover {
+  color: #007bff;
+}
+
+/* Card Styling */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
