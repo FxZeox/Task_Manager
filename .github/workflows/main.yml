@@ -27,18 +27,15 @@ jobs:
       - name: Install Datadog CLI
         run: npm install -g @datadog/datadog-ci
 
-      - name: Install Datadog Agent
-        env:
-          DD_API_KEY: ${{ secrets.DD_API_KEY }}
-          DD_SITE: "us5.datadoghq.com"
-        run: |
-          bash -c "$(curl -L https://install.datadoghq.com/scripts/install_script_agent7.sh)"
-
       - name: Run Pipeline with Datadog Trace
         env:
           DATADOG_API_KEY: ${{ secrets.DD_API_KEY }}
-          DATADOG_SITE: "us5.datadoghq.com"
+          DATADOG_SITE: "datadoghq.com"
         run: |
+          datadog-ci tag --level pipeline --name branch --value $(git rev-parse --abbrev-ref HEAD)
+          datadog-ci tag --level job --name job_id --value $GITHUB_RUN_ID
+          datadog-ci trace -- npm test
+
           datadog-ci tag --level pipeline --name branch --value $(git rev-parse --abbrev-ref HEAD)
           datadog-ci tag --level job --name job_id --value $GITHUB_RUN_ID
           datadog-ci trace -- npm test
