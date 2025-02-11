@@ -21,11 +21,32 @@ jobs:
         with:
           node-version: '14'
 
+      - name: Cache Node.js dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
       - name: Install dependencies
         run: npm install
 
+      - name: Check if Datadog Agent is already installed
+        id: datadog_check
+        run: |
+          if ! command -v datadog-agent &> /dev/null; then
+            echo "Datadog Agent not found, installing..."
+            echo "install_datadog=true" >> $GITHUB_ENV
+          else
+            echo "Datadog Agent already installed"
+            echo "install_datadog=false" >> $GITHUB_ENV
+          fi
+
       - name: Install Datadog Agent
+        if: env.install_datadog == 'true'
         run: |
           DD_API_KEY=4b3dc7d3beead01638572924b8e377d1 DD_SITE="us5.datadoghq.com" bash -c "$(curl -L https://install.datadoghq.com/scripts/install_script_agent7.sh)"
+
       - name: Run tests
         run: npm test
