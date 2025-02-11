@@ -24,18 +24,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Set up Datadog Tracing (optional)
-        run: |
-          # Ensure DD_API_KEY and DD_ENV variables are set
-          echo "DD_API_KEY=${{ secrets.DD_API_KEY }}" >> $GITHUB_ENV
-          echo "DD_ENV=ci" >> $GITHUB_ENV
-          echo "DD_SERVICE=your-service-name" >> $GITHUB_ENV
-
-          # Install and configure Datadog tracing libraries (if you have one set up for Node.js)
-          npm install dd-trace
-
-          # Initialize Datadog Tracing in your app (if necessary)
-          echo "require('dd-trace').init()" > ./tracing-init.js
+    
 
       - name: Run tests with traces
         run: |
