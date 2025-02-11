@@ -21,32 +21,25 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Cache Node.js dependencies
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
-
       - name: Install dependencies
         run: npm install
 
-      - name: Check if Datadog Agent is already installed
-        id: datadog_check
+      - name: Set up Datadog Tracing (optional)
         run: |
-          if ! command -v datadog-agent &> /dev/null; then
-            echo "Datadog Agent not found, installing..."
-            echo "install_datadog=true" >> $GITHUB_ENV
-          else
-            echo "Datadog Agent already installed"
-            echo "install_datadog=false" >> $GITHUB_ENV
-          fi
+          # Ensure DD_API_KEY and DD_ENV variables are set
+          echo "DD_API_KEY=${{ secrets.DD_API_KEY }}" >> $GITHUB_ENV
+          echo "DD_ENV=ci" >> $GITHUB_ENV
+          echo "DD_SERVICE=your-service-name" >> $GITHUB_ENV
 
-      - name: Install Datadog Agent
-        if: env.install_datadog == 'true'
+          # Install and configure Datadog tracing libraries (if you have one set up for Node.js)
+          npm install dd-trace
+
+          # Initialize Datadog Tracing in your app (if necessary)
+          echo "require('dd-trace').init()" > ./tracing-init.js
+
+      - name: Run tests with traces
         run: |
-          DD_API_KEY=4b3dc7d3beead01638572924b8e377d1 DD_SITE="us5.datadoghq.com" bash -c "$(curl -L https://install.datadoghq.com/scripts/install_script_agent7.sh)"
-
-      - name: Run tests
-        run: npm test
+          # Run your application with tracing enabled
+          node -r ./tracing-init.js your-test-script.js
+          
+          npm test
