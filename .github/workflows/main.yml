@@ -16,28 +16,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js v16
+      - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'  # Updated to Node.js v16
+          node-version: '14'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Set up Datadog Tracing
+      - name: Install Datadog Agent
         run: |
-          # Set Datadog environment variables (if you haven't already set them in the repository secrets)
-          echo "DD_API_KEY=${{ secrets.DD_API_KEY }}" >> $GITHUB_ENV
-          echo "DD_ENV=ci" >> $GITHUB_ENV
-          echo "DD_SERVICE=your-service-name" >> $GITHUB_ENV
-
-          # Install Datadog tracing library for Node.js
-          npm install dd-trace
-
-          # Initialize Datadog Tracing (if applicable, adjust according to your setup)
-          echo "require('dd-trace').init();" > ./tracing-init.js
-
-      - name: Run tests with traces
-        run: |
-          # Ensure tracing is initialized and then run tests
-          node -r ./tracing-init.js ./node_modules/.bin/mocha || npm test
+          DD_API_KEY=4b3dc7d3beead01638572924b8e377d1 DD_SITE="us5.datadoghq.com" bash -c "$(curl -L https://install.datadoghq.com/scripts/install_script_agent7.sh)"
+      - name: Run tests
+        run: npm test
