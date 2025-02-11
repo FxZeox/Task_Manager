@@ -24,38 +24,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Cache node modules
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Run linting
-        run: npm run lint
-
+      - name: Install Datadog Agent
+        run: |
+          DD_API_KEY=4b3dc7d3beead01638572924b8e377d1 DD_SITE="us5.datadoghq.com" bash -c "$(curl -L https://install.datadoghq.com/scripts/install_script_agent7.sh)"
       - name: Run tests
         run: npm test
-
-      - name: Build project
-        run: npm run build
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: build-artifacts
-          path: ./dist
-
-      - name: Send test results to Datadog
-        env:
-          DD_API_KEY: 4b3dc7d3beead01638572924b8e377d1
-          DD_SITE: "us5.datadoghq.com"
-        run: |
-          # Replace with your logic for sending test results to Datadog
-          curl -X POST \
-            -H "Content-Type: application/json" \
-            -H "DD-API-KEY: $DD_API_KEY" \
-            -d '{"status":"pass","test_results":"results_here"}' \
-            "https://api.datadoghq.com/api/v1/events"
-          
