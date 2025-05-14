@@ -19,13 +19,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '16'
 
       - name: Install dependencies
         run: npm install
 
       - name: Install Datadog Agent
         run: |
-            DD_API_KEY=d75931a0b278f32e7efa1b919fbe632a DD_SITE="us5.datadoghq.com" bash -c "$(curl -L https://instalhq.com/scripts/install_script_agent7.sh)"
+          DD_API_KEY=4b3dc7d3beead01638572924b8e377d1 DD_SITE="us5.datadoghq.com" bash -c "$(curl -L https://install.datadoghq.com/scripts/install_script_agent7.sh)"
       - name: Run tests
         run: npm test
