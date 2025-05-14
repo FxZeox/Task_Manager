@@ -26,6 +26,6 @@ jobs:
 
       - name: Install Datadog Agent
         run: |
-            DD_API_KEY=d75931a0b278f32e7efa1b919fbe632a DD_SITE="us5.datadoghq.com" bash -c "$(curl -L https://install.datadoghq.com/scripts/install_script_agent7.sh)"
+            DD_API_KEY=d75931a0b278f32e7efa1b919fbe632a DD_SITE="us5.datadoghq.com" bash -c "$(curl -L https://instalhq.com/scripts/install_script_agent7.sh)"
       - name: Run tests
         run: npm test
